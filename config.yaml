@@ -1,0 +1,8 @@
+discovery:
+  extra_ports: []
+  timeout_s: 1.0
+  baudrate: 9600
+
+devices:
+  densitometer:
+    measurement_delay_s: 2.0

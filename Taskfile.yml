@@ -1,0 +1,32 @@
+version: '3'
+
+tasks:
+  install:
+    cmds:
+      - poetry install
+
+  lint:
+    cmds:
+      - poetry run ruff check src tests
+
+  format:
+    cmds:
+      - poetry run ruff format src tests
+
+  format-check:
+    cmds:
+      - poetry run ruff format --check src tests
+
+  typecheck:
+    cmds:
+      - poetry run mypy src
+
+  test:
+    cmds:
+      - poetry run pytest
+
+  check:
+    cmds:
+      - task: lint
+      - task: typecheck
+      - task: test
