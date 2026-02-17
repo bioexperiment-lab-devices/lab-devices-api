@@ -32,7 +32,7 @@ class AppConfig(BaseSettings):
         dotenv_settings: PydanticBaseSettingsSource,
         file_secret_settings: PydanticBaseSettingsSource,
     ) -> tuple[PydanticBaseSettingsSource, ...]:
-        init_kwargs = init_settings.init_kwargs
+        init_kwargs = init_settings.init_kwargs  # type: ignore[attr-defined]
         yaml_file = Path(init_kwargs.get("yaml_file", "config.yaml"))
         return (
             init_settings,

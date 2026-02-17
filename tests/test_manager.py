@@ -2,7 +2,6 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from lab_devices.config import AppConfig
 from lab_devices.devices.densitometer.driver import DensitometerDriver
 from lab_devices.devices.pump.driver import PumpDriver
 from lab_devices.exceptions import DeviceNotFoundError
@@ -39,9 +38,7 @@ class TestDeviceManager:
     async def test_discover_multiple_devices(self) -> None:
         discovered = [
             DiscoveredDevice(device_type=DeviceType.PUMP, port="/dev/ttyUSB0"),
-            DiscoveredDevice(
-                device_type=DeviceType.DENSITOMETER, port="/dev/ttyUSB1"
-            ),
+            DiscoveredDevice(device_type=DeviceType.DENSITOMETER, port="/dev/ttyUSB1"),
         ]
         mock_conn = AsyncMock()
         with (
@@ -106,9 +103,7 @@ class TestDeviceManager:
 
     async def test_get_pump_wrong_type(self) -> None:
         discovered = [
-            DiscoveredDevice(
-                device_type=DeviceType.DENSITOMETER, port="/dev/ttyUSB0"
-            ),
+            DiscoveredDevice(device_type=DeviceType.DENSITOMETER, port="/dev/ttyUSB0"),
         ]
         mock_conn = AsyncMock()
         with (
@@ -128,9 +123,7 @@ class TestDeviceManager:
 
     async def test_get_densitometer(self) -> None:
         discovered = [
-            DiscoveredDevice(
-                device_type=DeviceType.DENSITOMETER, port="/dev/ttyUSB0"
-            ),
+            DiscoveredDevice(device_type=DeviceType.DENSITOMETER, port="/dev/ttyUSB0"),
         ]
         mock_conn = AsyncMock()
         with (
@@ -151,9 +144,7 @@ class TestDeviceManager:
     async def test_list_devices(self) -> None:
         discovered = [
             DiscoveredDevice(device_type=DeviceType.PUMP, port="/dev/ttyUSB0"),
-            DiscoveredDevice(
-                device_type=DeviceType.DENSITOMETER, port="/dev/ttyUSB1"
-            ),
+            DiscoveredDevice(device_type=DeviceType.DENSITOMETER, port="/dev/ttyUSB1"),
         ]
         mock_conn = AsyncMock()
         with (

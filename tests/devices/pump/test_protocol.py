@@ -6,19 +6,13 @@ class TestPumpLegacyProtocol:
         self.protocol = PumpLegacyProtocol()
 
     def test_identification_probe(self) -> None:
-        assert self.protocol.build_identification_probe() == bytes(
-            [0x01, 0x02, 0x03, 0x04, 0xB5]
-        )
+        assert self.protocol.build_identification_probe() == bytes([0x01, 0x02, 0x03, 0x04, 0xB5])
 
     def test_parse_identification_response_valid(self) -> None:
-        assert self.protocol.parse_identification_response(
-            bytes([0x0A, 0x00, 0x00, 0x00])
-        ) is True
+        assert self.protocol.parse_identification_response(bytes([0x0A, 0x00, 0x00, 0x00])) is True
 
     def test_parse_identification_response_invalid(self) -> None:
-        assert self.protocol.parse_identification_response(
-            bytes([0x46, 0x00, 0x00, 0x00])
-        ) is False
+        assert self.protocol.parse_identification_response(bytes([0x46, 0x00, 0x00, 0x00])) is False
 
     def test_identification_response_size(self) -> None:
         assert self.protocol.get_identification_response_size() == 4

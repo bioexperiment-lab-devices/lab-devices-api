@@ -49,10 +49,7 @@ async def discover_devices(
 ) -> list[DiscoveredDevice]:
     if ports is None:
         ports = [p.device for p in comports()]
-    if extra_ports:
-        all_ports = list(set(ports + extra_ports))
-    else:
-        all_ports = ports
+    all_ports = list(set(ports + extra_ports)) if extra_ports else ports
 
     if not all_ports:
         return []

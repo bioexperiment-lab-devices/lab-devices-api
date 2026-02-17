@@ -25,9 +25,7 @@ class SerialConnection:
         try:
             self._serial = AioSerial(port=self._port, baudrate=self._baudrate)
         except Exception as e:
-            raise DeviceConnectionError(
-                f"Failed to open {self._port}: {e}"
-            ) from e
+            raise DeviceConnectionError(f"Failed to open {self._port}: {e}") from e
 
     async def disconnect(self) -> None:
         if self._serial is not None and self._serial.is_open:
@@ -40,9 +38,7 @@ class SerialConnection:
         async with self._lock:
             await self._serial.write_async(data)
 
-    async def send_and_receive(
-        self, data: bytes, response_size: int, timeout: float = 2.0
-    ) -> bytes:
+    async def send_and_receive(self, data: bytes, response_size: int, timeout: float = 2.0) -> bytes:
         if self._serial is None:
             raise DeviceConnectionError("Not connected")
         async with self._lock:
@@ -53,9 +49,7 @@ class SerialConnection:
                     timeout=timeout,
                 )
             except asyncio.TimeoutError as e:
-                raise DeviceTimeoutError(
-                    f"Read timeout on {self._port}"
-                ) from e
+                raise DeviceTimeoutError(f"Read timeout on {self._port}") from e
             return bytes(response)
 
     async def __aenter__(self) -> Self:

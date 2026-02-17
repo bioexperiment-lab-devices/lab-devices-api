@@ -20,13 +20,9 @@ class DensitometerDriver(BaseDeviceDriver):
 
     async def get_temperature(self) -> float:
         data = self._protocol.encode_temperature_request()
-        response = await self._send_and_receive(
-            data, self._protocol.get_value_response_size()
-        )
+        response = await self._send_and_receive(data, self._protocol.get_value_response_size())
         temperature = self._protocol.decode_value(response)
-        self._history.record_event(
-            "get_temperature", {"temperature_c": temperature}
-        )
+        self._history.record_event("get_temperature", {"temperature_c": temperature})
         return temperature
 
     async def get_od(self) -> float:
@@ -37,9 +33,7 @@ class DensitometerDriver(BaseDeviceDriver):
         await asyncio.sleep(self._measurement_delay_s)
 
         read_data = self._protocol.encode_od_request()
-        response = await self._send_and_receive(
-            read_data, self._protocol.get_value_response_size()
-        )
+        response = await self._send_and_receive(read_data, self._protocol.get_value_response_size())
         od = self._protocol.decode_value(response)
 
         self._history.end_current_state()

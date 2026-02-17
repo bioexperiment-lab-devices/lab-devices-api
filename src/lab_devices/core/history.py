@@ -8,9 +8,7 @@ class DeviceHistory:
         self._states: list[StateRecord] = []
         self._events: list[InstantEvent] = []
 
-    def start_state(
-        self, name: str, params: dict[str, float | str] | None = None
-    ) -> StateRecord:
+    def start_state(self, name: str, params: dict[str, float | str] | None = None) -> StateRecord:
         self.end_current_state()
         state = StateRecord(name=name, params=params or {})
         self._states.append(state)
@@ -21,9 +19,7 @@ class DeviceHistory:
         if current is not None:
             current.ended_at = datetime.now()
 
-    def record_event(
-        self, name: str, params: dict[str, float | str] | None = None
-    ) -> InstantEvent:
+    def record_event(self, name: str, params: dict[str, float | str] | None = None) -> InstantEvent:
         event = InstantEvent(name=name, params=params or {})
         self._events.append(event)
         return event

@@ -1,5 +1,6 @@
-import pytest
 from unittest.mock import AsyncMock
+
+import pytest
 
 from lab_devices.core.driver import BaseDeviceDriver
 from lab_devices.core.history import DeviceHistory

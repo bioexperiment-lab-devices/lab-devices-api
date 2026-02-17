@@ -22,9 +22,7 @@ class PumpDriver(BaseDeviceDriver):
         else:
             data = self._protocol.encode_rotate_right(speed)
         await self._send_command(data)
-        self._history.start_state(
-            "rotating", {"direction": direction.value, "speed": speed}
-        )
+        self._history.start_state("rotating", {"direction": direction.value, "speed": speed})
 
     async def stop_rotation(self) -> None:
         data = self._protocol.encode_rotate_left(0)

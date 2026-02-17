@@ -25,6 +25,11 @@ testpaths = ["tests"]
 [tool.mypy]
 strict = true
 
+[[tool.mypy.overrides]]
+module = ["aioserial", "serial", "serial.*", "serial.tools.*"]
+ignore_missing_imports = true
+follow_untyped_imports = false
+
 [tool.ruff]
 line-length = 120
 

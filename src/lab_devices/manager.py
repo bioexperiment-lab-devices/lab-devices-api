@@ -23,9 +23,7 @@ class DeviceManager:
     async def create(cls, config: AppConfig | None = None) -> Self:
         return cls(config)
 
-    async def discover(
-        self, ports: list[str] | None = None
-    ) -> dict[str, BaseDeviceDriver]:
+    async def discover(self, ports: list[str] | None = None) -> dict[str, BaseDeviceDriver]:
         discovered = await discover_devices(
             ports=ports,
             extra_ports=self._config.discovery.extra_ports,
@@ -48,9 +46,7 @@ class DeviceManager:
             self._connections.append(connection)
 
             history = DeviceHistory()
-            driver = self._create_driver(
-                device_info.device_type, connection, history
-            )
+            driver = self._create_driver(device_info.device_type, connection, history)
             self._devices[name] = driver
 
         return dict(self._devices)
@@ -62,13 +58,13 @@ class DeviceManager:
         history: DeviceHistory,
     ) -> BaseDeviceDriver:
         if device_type == DeviceType.PUMP:
-            protocol = PumpLegacyProtocol()
-            return PumpDriver(connection, protocol, history)
+            pump_protocol = PumpLegacyProtocol()
+            return PumpDriver(connection, pump_protocol, history)
         if device_type == DeviceType.DENSITOMETER:
-            protocol = DensitometerLegacyProtocol()
+            densitometer_protocol = DensitometerLegacyProtocol()
             return DensitometerDriver(
                 connection,
-                protocol,
+                densitometer_protocol,
                 history,
                 measurement_delay_s=self._config.devices.densitometer.measurement_delay_s,
             )
