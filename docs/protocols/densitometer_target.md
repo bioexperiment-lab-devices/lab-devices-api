@@ -1,5 +1,7 @@
 # Densitometer — Target Protocol (Future)
 
+**Protocol version: 0.1**
+
 ## Overview
 
 JSON-based protocol over serial with message framing. Replaces the legacy binary protocol.
@@ -14,62 +16,86 @@ Each message: `<length_2bytes_big_endian><json_payload>\n`
 
 ```json
 // Request:
-{"cmd": "identify"}
+{
+  "cmd": "identify"
+}
+
 // Response:
-{"device": "densitometer", "version": "2.0", "capabilities": ["temperature", "od"]}
+{
+  "device": "densitometer",
+  "version": "2.0",
+  "device_id": "<some_unique_id>"
+}
 ```
 
-### Read Temperature
+### Get Temperature
 
 ```json
 // Request:
-{"cmd": "read_temperature"}
+{
+  "cmd": "get_temperature"
+}
+
 // Response:
-{"status": "ok", "temperature_c": 23.50}
+{
+  "status": "ok",
+  "temperature_c": 23.50
+}
 ```
 
-### Start OD Measurement
+### Measure OD
 
 ```json
 // Request:
-{"cmd": "start_od_measurement"}
-// Response:
-{"status": "ok", "state": "measuring", "estimated_duration_s": 2.0}
-```
+{
+  "cmd": "measure_od"
+}
 
-### Read OD
+// Initial response:
+{
+  "status": "ok",
+  "state": "measuring_od",
+  "state_id": "<some_unique_id>",
+  "estimated_duration_s": 2.0
+}
 
-```json
-// Request:
-{"cmd": "read_od"}
-// Response (ready):
-{"status": "ok", "absorbance": 0.42}
-// Response (not ready):
-{"status": "error", "code": "MEASUREMENT_IN_PROGRESS", "message": "OD measurement not complete"}
+// Final response:
+{
+  "status": "ok",
+  "state": "idle",
+  "last_state_id": "<some_unique_id>",
+  "absorbance": 0.42
+}
 ```
 
 ### Query State
 
 ```json
 // Request:
-{"cmd": "status"}
+{
+  "cmd": "status"
+}
+
 // Response:
-{"state": "idle"}
+{
+  "state": "idle",
+  "last_state_id": "<some_unique_id>"
+}
 // or:
-{"state": "measuring_od", "elapsed_s": 1.2, "estimated_remaining_s": 0.8}
+{
+  "state": "measuring_od",
+  "state_id": "<some_unique_id>",
+  "estimated_duration_s": 2.0,
+  "elapsed_s": 1.2
+}
 ```
 
 ### Error Response
 
 ```json
-{"status": "error", "code": "INVALID_CMD", "message": "Unknown command: xyz"}
+{
+  "status": "error",
+  "code": "INVALID_CMD",
+  "message": "Unknown command: xyz"
+}
 ```
-
-## Improvements Over Legacy
-
-- Human-readable JSON
-- Explicit acknowledgment for measurement start
-- Measurement-not-ready error instead of silent bad data
-- Full floating-point precision for all values
-- State query with measurement progress
-- Standardized error responses
