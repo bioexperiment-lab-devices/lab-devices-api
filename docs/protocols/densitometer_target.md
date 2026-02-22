@@ -95,7 +95,17 @@ Each message: `<length_2bytes_big_endian><json_payload>\n`
 ```json
 {
   "status": "error",
-  "code": "INVALID_CMD",
-  "message": "Unknown command: xyz"
+  "code": "<error_code>",
+  "message": "<human-readable description>"
 }
 ```
+
+Error codes:
+
+| Code | Meaning |
+|------|---------|
+| `PARSE_ERROR` | Malformed JSON or missing `cmd` field |
+| `INVALID_CMD` | Unknown command name |
+| `INVALID_STATE` | Command not allowed in current state (e.g. `measure_od` while already measuring) |
+| `TEMP_SENSOR_ERROR` | Temperature sensor failure (no reading or out of range) |
+| `OD_SENSOR_ERROR` | Optical density sensor failure (no reading or out of range) |
